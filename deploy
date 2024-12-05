@@ -1,0 +1,131 @@
+#!/bin/bash
+# v2.0
+set -euo pipefail
+
+start_time=$SECONDS
+
+# Preflight checks
+if gcloud -v
+then
+   echo "----------------------"
+   echo "Using Google Cloud CLI"
+   echo "----------------------"
+else
+   echo 'Please install GCloud SDK: brew install --cask google-cloud-sdk'
+   echo 'To get homebrew: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+   echo 'To get python: brew install pyenv'
+   echo 'To get nvm: brew install nvm'
+   exit;
+fi;
+
+
+REPO=$(basename -s .git `git config --get remote.origin.url`);
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | sed "s/\//\-/g");
+COMMIT_SHA=$(git rev-parse HEAD);
+REGION="europe-west1";
+PORT=8080;
+PROJECT_PRD="noonprd-cloudrun";
+PROJECT_STG="noonstg-cloudrun";
+DEPLOYED_LOCATION="cloudrun";
+TIMESTAMP=$(date +"%Y%m%d%H%M%S");
+
+echo $TIMESTAMP;
+
+APP=;
+ENV=;
+PROJECT=;
+
+if [[ $# == 0 ]]
+then
+    echo "Usage: 'yarn deploy app1' (for beta.noon.com) or 'yarn deploy app1 stg' (for beta.noonstg.com)"
+fi;
+
+# If branchname is shorter than 3, exit
+if [[ ${#BRANCH_NAME} -lt 3 ]]
+then
+    echo "Branch name is too short. Please use a branch name with at least 3 characters."
+    exit;
+fi;
+
+if [[ $# == 1 ]]
+then
+    APP=$1
+    ENV="prod";
+    PROJECT=${PROJECT_PRD};
+    echo "Deploying ${APP} to beta.noon, from repository ${REPO}"
+fi;
+
+if [[ $# == 2 ]]
+then
+    # Validate
+    if [[ $2 == 'stg' ]]
+    APP=$1
+    then
+        echo "Deploying ${APP} to beta.noonstg, from repository ${REPO}"
+        ENV="staging";
+        PROJECT=${PROJECT_STG};
+    else
+        echo "Invalid environment, second arg should be 'stg' if you want to deploy to beta.noonstg. eg 'yarn deploy bigalog stg'"
+        exit;
+    fi;
+fi;
+
+# In a monorepo, we usually need to only build+deploy a single app, plus the core folder.
+DEPLOYMENT_NAME="${REPO}-${APP}"
+IMAGE="gcr.io/${PROJECT}/${REPO}:${COMMIT_SHA}"
+
+
+echo "----------------------------------------------- BUILDING IMAGE -----------------------------------------------"
+gcloud builds submit --config cloudbuild.yaml \
+    --substitutions=_COMMIT_SHA=${COMMIT_SHA},_REPO=${REPO},_DEPLOYED_LOCATION=${DEPLOYED_LOCATION},_TIMESTAMP=${TIMESTAMP} \
+    --project=${PROJECT}
+
+
+echo "---------------------------------------- DEPLOYING IMAGE TO CLOUD RUN ----------------------------------------"
+gcloud run deploy ${DEPLOYMENT_NAME} \
+    --image ${IMAGE} \
+    --port=${PORT} \
+    --region=${REGION} \
+    --project=${PROJECT} \
+    --memory=2Gi \
+    --allow-unauthenticated \
+    --tag ${BRANCH_NAME} \
+    --update-env-vars _APP=${APP},_DEPLOYED_LOCATION=${DEPLOYED_LOCATION}
+
+elapsed=$(( $SECONDS - $start_time ))
+elapsed_mins=$(( $elapsed / 60 ))
+elapsed_seconds=$(( $elapsed % 60 ))
+
+TLD="com"
+PACKAGE_URL=$(node -p "require('./apps/${APP}/package.json').url")
+if [[ $PACKAGE_URL == *"team"* ]]
+then
+    TLD="team"
+fi;
+
+echo ""
+echo "Available at:"
+if [[ $ENV == "staging" ]]
+then
+    echo "- https://${BRANCH_NAME}.${DEPLOYMENT_NAME}.beta.noonstg.${TLD}/"
+else
+    echo "- https://${BRANCH_NAME}.${DEPLOYMENT_NAME}.beta.noon.${TLD}/"
+fi;
+echo ""
+
+echo "[Time: ${elapsed_mins}min ${elapsed_seconds}sec]"
+
+# SCRIPT CHANGELOG
+# [2022-02-01] v1.0 Initialization
+# [2022-03-01] v1.1 Moved project to noonstg-cloudrun, which allows load-balancer to route traffic. Also specified project in deploy cmd.
+# [2022-03-02] v1.2 Merged Harshal's changes - with DEPLOYED_LOCATION, ENV, and updating the REPO to read off remote
+# [2022-03-25] v1.3 (WIP) making the script executable from within web-boilerplate directly. Needs modification
+# [2022-03-31] v1.4 Script is now dynamic, can deploy to prod or staging
+# [2022-04-08] v1.5 Added gcloud cli detection, and instructs dev to install needed tools
+# [2022-04-10] v1.6 Added correct links at the end
+# [2022-05-20] v1.7 Removed Middleware check for u/p. Using IAP instead.
+# [2022-06-30] v1.8 Removed MARKETPLACE - we wouldn't have multiple marketplaces in one repo anymore.
+# [2023-04-30] v2.0 Cloudrun script moved to repo.
+# [2023-06-21] v2.1 Cloudrun script tweaked to noon.
+# [2023-06-23] v3.0 Cloudrun script tweaked to consolidate monorepo into one image. Quick doc here: https://docs.google.com/document/d/1ivLMrZknS4Nj--shjqT_h7VpLr5llPx7YmEm4Y-XrEs
+# [2024-08-14] v3.1 One cloudbuild to rule them all. No separate "cloudbuild-no-cdn". We will always upload assets to CDN. Keeping the setup/configuration similar to production.

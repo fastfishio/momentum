@@ -1,0 +1,67 @@
+{
+    "typescript.format.enable": false,
+    "typescript.implementationsCodeLens.enabled": true,
+    "javascript.validate.enable": false,
+    "javascript.format.enable": false,
+    "files.insertFinalNewline": true,
+    "npm.packageManager": "yarn",
+    "editor.renderWhitespace": "all",
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "never",
+        "source.fixAll.eslint": "explicit",
+        "eslint.autoFixOnSave": "explicit",
+        "source.fixAll.stylelint": "explicit"
+    },
+    "eslint.codeActionsOnSave.rules": null,
+    "eslint.useFlatConfig": true,
+    "[javascript]": {
+        "editor.formatOnSave": false,
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": false,
+    },
+    "[typescript]": {
+        "editor.formatOnSave": false,
+    },
+    "[typescriptreact]": {
+        "editor.formatOnSave": false,
+    },
+    "editor.trimAutoWhitespace": true,
+    "editor.wordWrap": "on",
+    "workbench.editor.revealIfOpen": true,
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "search.exclude": {
+        "**/.dev_assets/**": true,
+        "**/.git/**": true,
+        "**/.github/**": true,
+        "**/.next/**": true,
+        "**/.vscode/**": true,
+        "**/node_modules/**": true
+    },
+    "files.watcherExclude": {
+        "**/.dev_assets/**": true,
+        "**/.git/**": true,
+        "**/.github/**": true,
+        "**/.next/**": true,
+        "**/.vscode/**": true,
+        "**/node_modules/**": true
+    },
+    "css.validate": false,
+    "scss.validate": false,
+    "stylelint.packageManager": "yarn",
+    "stylelint.validate": [
+        "css",
+        "scss",
+        ".module.scss"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "files.exclude": {
+        "**/.git/{branches,info,logs,objects,*refs,COMM*,desc*,*HEAD,index,config}": true,
+    }
+}

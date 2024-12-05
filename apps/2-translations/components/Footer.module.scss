@@ -1,0 +1,25 @@
+@use '_core/styles/mixins' as *;
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+    gap: var(--spacing-xlarge);
+    padding: var(--spacing-xlarge);
+
+    .langSwitch {
+        color: var(--color-grey1);
+
+        .lang {
+            font-weight: 600;
+            padding: var(--spacing-xsmall) var(--spacing-xlarge);
+            background-color: var(--color-noon-black2);
+            color: var(--color-white);
+            border-radius: var(--spacing-medium);
+        }
+    }
+
+    .copy {
+        color: var(--color-grey2);
+    }
+}

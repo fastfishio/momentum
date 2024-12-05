@@ -1,0 +1,17 @@
+@use '_core/styles/mixins' as *;
+
+.container {
+    width: 100%;
+    position: relative;
+
+    @include flex-column;
+
+    min-width: 0;
+    gap: var(--spacing-xlarge);
+
+    .heading {
+        width: 100%;
+
+        @include font-size(24);
+    }
+}

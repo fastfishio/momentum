@@ -1,0 +1,23 @@
+@use '_core/styles/mixins' as *;
+
+.container {
+    width: 100%;
+    position: relative;
+
+    @include flex-column;
+
+    min-width: 0;
+    gap: var(--spacing-xlarge);
+
+    .title {
+        width: 100%;
+
+        @include font-size(24);
+    }
+
+    .body {
+        padding: var(--spacing-xlarge);
+        background-color: var(--color-grey3);
+        color: var(--color-grey5);
+    }
+}

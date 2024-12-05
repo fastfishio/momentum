@@ -1,0 +1,473 @@
+@use '_core/styles/mixins' as *;
+
+// 1. OUR VARS
+// -- a. COLORS
+// -- b. SPACINGS
+// 2. FONTS
+// 3. GENERAL RESET
+// 4. CORE
+// 5. FORM ELEMENTS
+// 6. CUSTOM ACTIONS (LINKS/BUTTONS)
+
+// --------------------------------------------------------------- 1. OUR VARS
+:root {
+    // ----------------------------------------- a. COLORS
+    --color-noon-yellow: #feee00;
+    --color-noon-blue: #3866df;
+    --color-noon-black: #404553;
+    --color-noon-black2: #404553cc;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-grey1: #7e859b;
+    --color-grey2: #9ba0b1;
+    --color-grey3: #dadce3;
+    --color-grey4: #f3f4f8;
+    --color-grey5: #4b4b4b;
+    --color-grey-borders: #e5e5e5;
+    --color-system-green: #38ae04;
+    --color-system-red: #fa0000;
+
+    // ----------------------------------------- b. SPACINGS
+    --spacing-xxsmall: 2px;
+    --spacing-xsmall: 4px;
+    --spacing-small: 8px;
+    --spacing-small-medium: 12px;
+    --spacing-medium: 16px;
+    --spacing-medium-large: 24px;
+    --spacing-large: 32px;
+    --spacing-xlarge: 40px;
+    --spacing-xxlarge: 48px;
+}
+
+// --------------------------------------------------------------- 2. FONTS
+
+@include font-face(
+    'Proxima Nova',
+    'https://f.nooncdn.com/s/app/com/common/fonts/proxima-v2/Proxima-Nova-Regular'
+);
+@include font-face(
+    'Proxima Nova',
+    'https://f.nooncdn.com/s/app/com/common/fonts/proxima-v2/Proxima-Nova-Semibold',
+    600
+);
+@include font-face(
+    'Proxima Nova',
+    'https://f.nooncdn.com/s/app/com/common/fonts/proxima-v2/Proxima-Nova-Bold',
+    bold
+);
+
+// AR
+@include font-face(
+    'Cairo',
+    'https://fonts.gstatic.com/s/cairo/v2/KHiPzIiPko_Fw3pWntR2CoDGDUGfDkXyfkzVDelzfFk'
+);
+@include font-face(
+    'Cairo',
+    'https://fonts.gstatic.com/s/cairo/v2/MI6TrIXLGD9aHguHYHeGURkAz4rYn47Zy2rvigWQf6w',
+    600
+);
+@include font-face(
+    'Cairo',
+    'https://fonts.gstatic.com/s/cairo/v2/RLgQnjqLWN5-LcxkRZr1cBkAz4rYn47Zy2rvigWQf6w',
+    bold
+);
+
+// --------------------------------------------------------------- 3. GENERAL RESET
+
+/* http://meyerweb.com/eric/tools/css/reset/
+v2.0 | 20110126
+License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+// --------------------------------------------------------------- 4. CORE
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+}
+
+*:focus-visible {
+    outline: 1px solid var(--color-noon-blue);
+    outline-offset: -1px;
+}
+
+html {
+    font-size: 14px;
+}
+
+/* just so it's organized */
+/* stylelint-disable-next-line no-duplicate-selectors */
+body {
+    min-height: 100vh;
+    background-color: var(--color-white);
+    color: var(--color-black);
+    line-height: 1.5;
+    font-family: 'Proxima Nova', 'Helvetica Neue', Arial, sans-serif;
+
+    @include flex-column;
+
+    min-width: 0;
+
+    html[dir='rtl'] & {
+        font-family: Cairo, Tahoma, sans-serif;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+strong,
+b {
+    font-weight: 700;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+
+    /* https://caniuse.com/mdn-html_elements_img_aspect_ratio_computed_from_attributes */
+    /* stylelint-disable-next-line property-no-unknown */
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+.siteWidthContainer {
+    padding-left: var(--spacing-site-horz);
+    padding-right: var(--spacing-site-horz);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@include screen-min-desktop-lg {
+    .siteWidthContainer {
+        max-width: 1920px;
+    }
+}
+
+.hideForDesktop {
+    @include screen-min-desktop {
+        display: none;
+    }
+}
+
+.showForDesktop {
+    display: none;
+
+    @include screen-min-desktop {
+        display: block;
+    }
+}
+
+.pageMwebWithBottomTabs {
+    padding-bottom: var(--mweb-bottom-tabs-height);
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+// --------------------------------------------------------------- 5. FORM ELEMENTS
+input,
+textarea,
+select,
+button {
+    font: inherit;
+    font-size: 16px;
+
+    /* prevent ios zoom plus who doesnt like user friendly form inputs? */
+    color: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+input::-ms-clear {
+    display: none;
+
+    /* remove IE X - lets provide our own */
+}
+
+input::-webkit-search-cancel-button {
+    appearance: none;
+
+    /* remove webkit X - lets provide our own */
+}
+
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+    border-width: 0;
+    cursor: pointer;
+}
+
+input[type='date'],
+input[type='datetime-local'],
+input[type='email'],
+input[type='number'],
+input[type='password'],
+input[type='tel'],
+input[type='text'],
+textarea {
+    appearance: none;
+    border: 1px solid var(--color-grey2);
+    background-color: var(--color-white);
+}
+
+input[type='search'] {
+    appearance: none;
+    border: none;
+    background-color: rgb(219 219 219 / 50%);
+
+    /* This specific alpha-enabled color is not present in the design language */
+}
+
+textarea {
+    resize: vertical;
+}
+
+select {
+    border: 1px solid var(--color-grey2);
+    background-color: var(--color-white);
+}
+
+button {
+    font-size: inherit;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+button[disabled] {
+    cursor: default;
+}
+
+input:not([type='checkbox']),
+input:not([type='radio']),
+textarea,
+select {
+    display: block;
+    appearance: none;
+}
+
+input:not([type='checkbox'])::placeholder,
+input:not([type='radio'])::placeholder,
+textarea::placeholder,
+select::placeholder {
+    color: var(--color-grey2);
+}
+
+input[type='search']::placeholder {
+    color: var(--color-grey1);
+}
+
+input:not([type='checkbox']).error,
+input:not([type='radio']).error,
+textarea.error,
+select.error {
+    border-color: var(--color-system-red);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    input:not([type='checkbox']):hover,
+    input:not([type='radio']):hover,
+    textarea:hover,
+    select:hover {
+        border-color: var(--color-grey1);
+    }
+}
+
+input:not([type='checkbox']):focus,
+input:not([type='radio']):focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-noon-black);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    input:not([type='checkbox']).error,
+    input:not([type='radio']).error,
+    textarea.error,
+    select.error {
+        border-color: var(--color-system-red);
+    }
+}
+
+input:not([type='checkbox']).valid,
+input:not([type='radio']).valid,
+textarea.valid,
+select.valid {
+    border-color: var(--color-system-green);
+}
+
+input:not([type='checkbox'])[disabled],
+input:not([type='radio'])[disabled],
+textarea[disabled],
+select[disabled] {
+    cursor: not-allowed;
+    border-color: var(--color-grey3);
+    background-color: var(--color-grey4);
+    color: var(--color-grey2);
+}
+
+input[type='submit'] {
+    display: none;
+}
+
+// --------------------------------------------------------------- 6. CUSTOM ACTIONS (LINKS/BUTTONS)
+
+// Used in case of DateInput */ attention cli - check where this is used, cant this go in the date component itself?
+html[dir='rtl'] .ltrForce {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+    text-align: right;
+}

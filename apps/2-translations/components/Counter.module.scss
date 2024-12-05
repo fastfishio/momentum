@@ -1,0 +1,16 @@
+@use '_core/styles/mixins' as *;
+
+.content {
+    width: 100%;
+
+    @include flex-center-column;
+}
+
+.button {
+    align-self: center;
+    padding: var(--spacing-medium) var(--spacing-xlarge);
+    border: 1px solid var(--color-grey-borders);
+    background-color: var(--color-grey2);
+    border-radius: var(--spacing-small);
+    color: var(--color-grey5);
+}

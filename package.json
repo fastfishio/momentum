@@ -1,0 +1,86 @@
+{
+  "name": "web-boilerplate-v4",
+  "version": "4.0.0",
+  "private": true,
+  "workspaces": [
+    "_core",
+    "apps/*"
+  ],
+  "scripts": {
+    "simple": "             turbo dev --filter=@web-boilerplate-v4/simple",
+    "translations": "       turbo dev --filter=@web-boilerplate-v4/translations",
+    "buildall": "           turbo build",
+    "lint": "               eslint"
+  },
+  "dependencies": {
+    "_core": "workspace:_core",
+    "clsx": "^2.1.1",
+    "i18next": "^23.12.2",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-fs-backend": "^2.3.1",
+    "i18next-resources-to-backend": "^1.2.1",
+    "next": "14.2.5",
+    "next-i18next": "^15.3.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-i18next": "^15.0.0",
+    "universal-cookie": "^7.2.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^14.2.3",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "eslint-plugin-css-modules": "^2.12.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-json": "^4.0.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-unicorn": "^54.0.0",
+    "postcss": "^8.4.39",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^9.6.0",
+    "postcss-rtl": "^2.0.0",
+    "sass": "^1.77.8",
+    "stylelint": "^16.7.0",
+    "stylelint-config-css-modules": "^4.4.0",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-prettier": "^5.0.2",
+    "stylelint-scss": "^6.4.1",
+    "turbo": "^2.0.9",
+    "typescript": "^5"
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard-scss",
+      "stylelint-config-css-modules",
+      "stylelint-prettier/recommended"
+    ],
+    "plugins": [
+      "stylelint-scss",
+      "stylelint-prettier"
+    ],
+    "rules": {
+      "selector-class-pattern": "^(--)?[a-z]([A-Z]?[a-z]+)+",
+      "prettier/prettier": [
+        true,
+        {
+          "singleQuote": true,
+          "tabWidth": 4
+        }
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.12.0",
+    "npm": "use bun please",
+    "yarn": "use bun please"
+  },
+  "packageManager": "bun@1.1.12"
+}

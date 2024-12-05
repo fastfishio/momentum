@@ -1,0 +1,8 @@
+{
+    "_header_title": "A NextJS 14 app with Translations",
+    "_footer_language-switcher": "<span>Switch to <text>{{lang}}</text></span>",
+    "_switcher-content_zero": "You have clicked {{count}} times",
+    "_switcher-content": "You have clicked {{count}} time",
+    "_switcher-content_other": "You have clicked {{count}} times",
+    "click-me": "Click me"
+}

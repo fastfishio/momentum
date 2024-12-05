@@ -1,0 +1,10 @@
+@use '_core/styles/mixins' as *;
+
+.container {
+    @include flex-column;
+
+    align-items: flex-end;
+    min-width: 0;
+    gap: var(--spacing-xlarge);
+    padding: var(--spacing-xlarge);
+}

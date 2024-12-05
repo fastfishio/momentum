@@ -1,0 +1,59 @@
+# This is used to detect and report application security vulnerabilities across our Github organization. For any questions, please reach out to Infosec.
+
+# for more information about this YML file - refer to our infosec docs: https://github.com/fastfishio/infosec-docs/blob/main/scanners/appsecurity-scanner.md
+
+name: AppSecurity
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+jobs:
+  vulnerability-scan:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:     
+      READ_REPOS: ${{ secrets.SECURITY_READ_REPOS_TOKEN }}
+      SEC_REPORTS_GSHEET: ${{secrets.SEC_REPORTS_GSHEET}}
+      GITHUB_CTX: ${{ toJson(github) }}
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup AppSecurity Scanner  
+      id: setup-appsecurity-scanner
+      continue-on-error: true
+      run: |
+        curl -sfL https://storage.googleapis.com/noon-security-ops-7b6b3e6fd90e6/appsecurity-scanner/scripts/setup.sh | bash -
+    
+    - name: Caching Dependencies 
+      id: cache-step
+      continue-on-error: true
+      uses: actions/cache@v2
+      with:
+        path: /opt/venv
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Installing Dependencies
+      id: installing-dependencies
+      continue-on-error: true
+      if: steps.cache-step.outputs.cache-hit != 'true'
+      run: |
+        curl -sfL https://storage.googleapis.com/noon-security-ops-7b6b3e6fd90e6/appsecurity-scanner/scripts/requirements.sh | bash -
+        
+    - name: Running AppSecurity Scanner
+      id: running-appsecurity-scanner
+      continue-on-error: true
+      run: |
+        curl -sfL https://storage.googleapis.com/noon-security-ops-7b6b3e6fd90e6/appsecurity-scanner/scripts/scan.sh | bash - 
+     
+    - name: Reporting and Monitoring
+      id: reporting-monitoring
+      continue-on-error: true
+      env:     
+        STEPS_CTX: ${{ toJson(steps) }}
+      run: |
+        curl -sfL https://storage.googleapis.com/noon-security-ops-7b6b3e6fd90e6/appsecurity-scanner/scripts/reporting-monitoring.sh | bash -
+

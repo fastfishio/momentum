@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["_ENV", "_DEPLOYED_LOCATION", "_ASSET_TAG"],
+  "globalPassThroughEnv": ["_ENV", "_REPO", "_DEPLOYED_LOCATION", "_ASSET_TAG", "IS_DOCKER", "_COMMIT_SHA", "_BRANCH_NAME"],
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "lint": {},
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

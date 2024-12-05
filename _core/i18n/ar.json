@@ -1,0 +1,11 @@
+{
+    "_header_title": "تطبيق بنسخة نيكست ١٤ يتحدث العربية بطلاقة!",
+    "_footer_language-switcher": "<span>غير الى <text>{{lang}}</text></span>",
+    "_switcher-content_zero": "لم تضغط بعد اي مرة",
+    "_switcher-content_one": "لقد ضغطت مرة واحدة",
+    "_switcher-content_two": "لقد ضغطت مرتين ",
+    "_switcher-content_few": "لقد ضغطت {{count}} مرات",
+    "_switcher-content_many": "لقد ضغطت {{count}} مرات",
+    "_switcher-content_others": "لقد ضغطت {{count}} مرات",
+    "click-me": "اضغط هنا"
+}
